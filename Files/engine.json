@@ -1,17 +1,9 @@
 [
   {
-    "id": "book1",
-    "title": "كتاب التجارب",
-    "file": "Files/Elsedm.txt",
-    "image": "Files/Images/Polish_20260222_140518414.png",
-    "descFile": "تجارب.txt",
-    "color": "#5c1a1a"
-  },
-  {
-    "id": "book2", 
-    "title": "كتاب الرحلات",
-    "file": "رحلات.txt",
-    "image": "رحلات.jpg",
-    "descFile": "رحلات.txt"
+    "title": "السدم",
+    "image": "Files/Images/Elsedm.jpg",
+    "descFile": "Files/Texts/Elsedm-desc.txt",
+    "file": "Files/Texts/Elsedm.txt",
+    "color": "#3a1020"
   }
 ]

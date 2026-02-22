@@ -1,0 +1,18 @@
+[
+  {
+    "title": "الظل الأخير",
+    "category": "رواية",
+    "image": "Files/Images/الظل-الأخير.jpg",
+    "descFile": "Files/Texts/الظل-الأخير.txt",
+    "pdf": "Files/الظل-الأخير.pdf",
+    "color": "#4a1a10"
+  },
+  {
+    "title": "أصوات من الصحراء",
+    "category": "قصة",
+    "image": "Files/Images/أصوات-من-الصحراء.jpg",
+    "descFile": "Files/Texts/أصوات-من-الصحراء.txt",
+    "pdf": "Files/أصوات-من-الصحراء.pdf",
+    "color": "#1a3050"
+  }
+]

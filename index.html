@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مكتبتي النصية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0b08;
+      --surface: #161209;
+      --card: #1e1810;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-dim: rgba(201,168,76,0.13);
+      --cream: #f0e6cc;
+      --muted: #7a6a50;
+      --border: #2e2618;
+      --shadow: 0 20px 40px -12px rgba(0,0,0,0.8);
+      --radius: 6px;
+      --green: #4caf50;
+      --red: #f44336;
+      --blue: #2196f3;
+      --yellow: #ffeb3b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'Tajawal', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9000;
+    }
+
+    /* الهيدر */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 5rem 1.5rem 3.5rem;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .ornament {
+      font-family: 'Amiri', serif;
+      color: var(--gold);
+      font-size: 1.2rem;
+      letter-spacing: 12px;
+      opacity: 0.5;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Amiri', serif;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 2px;
+      line-height: 1.1;
+      text-shadow: 0 2px 10px rgba(201,168,76,0.2);
+    }
+
+    .subtitle {
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      letter-spacing: 4px;
+      font-weight: 300;
+    }
+
+    /* شريط التحكم */
+    .controls {
+      max-width: 1000px;
+      margin: 3rem auto 0;
+      padding: 0 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 1rem; top: 50%;
+      transform: translateY(-50%);
+      width: 1.1rem; height: 1.1rem;
+      stroke: var(--muted); fill: none;
+      stroke-width: 2; stroke-linecap: round;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      padding: 0.9rem 1rem 0.9rem 2.8rem;
+      border-radius: var(--radius);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.25s;
+    }
+
+    .search-wrap input::placeholder { color: var(--muted); opacity: 0.7; }
+    .search-wrap input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+    }
+
+    /* زر المفضلة */
+    .fav-filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.9rem 1.5rem;
+      border-radius: var(--radius);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: all 0.25s;
+      white-space: nowrap;
+    }
+
+    .fav-filter-btn svg {
+      width: 1.1rem; height: 1.1rem;
+      fill: none; stroke: currentColor;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .fav-filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .fav-filter-btn.active {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .fav-filter-btn.active svg { fill: var(--gold); stroke: var(--gold); }
+
+    /* إحصائيات */
+    .stats {
+      max-width: 1000px;
+      margin: 1.2rem auto 0;
+      padding: 0 1.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+    .stats strong { color: var(--gold); font-weight: 500; margin: 0 0.2rem; }
+
+    /* شبكة الكتب */
+    .grid {
+      max-width: 1000px;
+      margin: 2rem auto 0;
+      padding: 0 1.5rem 6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.8rem;
+    }
+
+    /* البطاقة */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: var(--shadow);
+    }
+
+    /* زر الإعجاب */
+    .card-like {
+      position: absolute;
+      top: 0.8rem; left: 0.8rem;
+      z-index: 10;
+      width: 2.4rem; height: 2.4rem;
+      border-radius: 50%;
+      background: rgba(13,11,8,0.7);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s;
+    }
+
+    .card-like:hover {
+      background: rgba(201,168,76,0.2);
+      border-color: var(--gold);
+      transform: scale(1.1);
+    }
+
+    .card-like svg {
+      width: 1.2rem; height: 1.2rem;
+      fill: none;
+      stroke: var(--muted);
+      stroke-width: 2;
+      transition: all 0.2s;
+    }
+
+    .card-like.liked svg { fill: var(--gold); stroke: var(--gold); }
+
+    /* الغلاف */
+    .card-cover {
+      height: 200px;
+      overflow: hidden;
+      background: #1a1a1a;
+    }
+
+    .card-cover img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .card:hover .card-cover img { transform: scale(1.08); }
+
+    .card-cover-fallback {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .card-cover-fallback::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255,255,255,0.02) 12px, rgba(255,255,255,0.02) 13px);
+    }
+
+    .fallback-title {
+      font-family: 'Amiri', serif;
+      font-size: 1.3rem;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      padding: 1.2rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+      position: relative; z-index: 1;
+      line-height: 1.5;
+    }
+
+    .fallback-orn {
+      position: absolute;
+      bottom: 0.6rem; left: 0; right: 0;
+      text-align: center;
+      font-family: 'Amiri', serif;
+      color: var(--gold);
+      opacity: 0.3; font-size: 0.9rem; z-index: 1;
+    }
+
+    /* محتوى البطاقة */
+    .card-body {
+      padding: 1.2rem 1.2rem 1.4rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-family: 'Amiri', serif;
+      font-size: 1.15rem;
+      color: var(--cream);
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+      opacity: 0.9;
+    }
+
+    /* أزرار البطاقة */
+    .card-actions {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.7rem 0.4rem;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .btn svg {
+      width: 0.9rem; height: 0.9rem;
+      stroke: currentColor; fill: none;
+      stroke-width: 2;
+    }
+
+    .btn-read {
+      background: var(--gold);
+      color: #0d0b08;
+    }
+    .btn-read:hover { background: var(--gold-light); }
+
+    .btn-dl {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-dl:hover { color: var(--cream); border-color: var(--muted); }
+
+    /* قارئ النصوص */
+    .text-reader {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      z-index: 10000;
+      display: flex; flex-direction: column;
+      opacity: 0; visibility: hidden;
+      transition: 0.3s ease;
+    }
+
+    .text-reader.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .reader-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .reader-title {
+      font-family: 'Amiri', serif;
+      font-size: 1.2rem;
+      color: var(--gold-light);
+    }
+
+    .reader-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .reader-font-size {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .reader-font-size button {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      width: 2rem;
+      height: 2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .reader-font-size button:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .reader-actions {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .reader-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--cream);
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: 0.2s;
+    }
+
+    .reader-btn svg {
+      width: 1rem; height: 1rem;
+      stroke: currentColor; fill: none;
+      stroke-width: 2;
+    }
+
+    .reader-btn:hover { background: rgba(255,255,255,0.05); }
+    .reader-btn.gold { background: var(--gold); color: #0d0b08; border-color: var(--gold); font-weight: 700; }
+    .reader-btn.gold:hover { background: var(--gold-light); }
+
+    /* محتوى القارئ */
+    .reader-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      background: var(--surface);
+      direction: rtl;
+    }
+
+    .reader-pages {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .reader-page {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      page-break-after: always;
+    }
+
+    .reader-page:last-child {
+      margin-bottom: 0;
+    }
+
+    .reader-page-number {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+    }
+
+    .reader-page-number::before {
+      content: '✦';
+      margin: 0 0.5rem;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+
+    .reader-page-number::after {
+      content: '✦';
+      margin: 0 0.5rem;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+
+    /* تنسيقات النص */
+    .reader-text {
+      font-family: 'Amiri', serif;
+      line-height: 1.8;
+      color: var(--cream);
+    }
+
+    .reader-text p {
+      margin-bottom: 1rem;
+    }
+
+    .reader-text .green { color: var(--green); }
+    .reader-text .red { color: var(--red); }
+    .reader-text .blue { color: var(--blue); }
+    .reader-text .yellow { color: var(--yellow); }
+    .reader-text .bold { font-weight: 700; }
+    .reader-text .italic { font-style: italic; }
+
+    /* رسائل الخطأ */
+    .error-message {
+      background: rgba(244, 67, 54, 0.1);
+      border: 1px solid var(--red);
+      color: var(--red);
+      padding: 1rem;
+      border-radius: var(--radius);
+      text-align: center;
+      margin: 2rem;
+    }
+
+    /* الحالات الخاصة */
+    .empty, .error-msg {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 5rem 1.5rem;
+    }
+
+    .empty svg {
+      width: 4rem; height: 4rem;
+      stroke: var(--muted); fill: none;
+      stroke-width: 1.2; opacity: 0.25;
+      margin: 0 auto 1.2rem; display: block;
+    }
+
+    .empty h3 {
+      font-family: 'Amiri', serif;
+      font-size: 1.5rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .empty p, .error-msg {
+      color: var(--muted);
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    .error-msg code {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .loading {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 5rem;
+      color: var(--muted);
+    }
+
+    .loading::after {
+      content: '';
+      display: block;
+      width: 2.5rem; height: 2.5rem;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      margin: 1.2rem auto 0;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* تذييل */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+    footer span { color: var(--gold); }
+
+    /* شريط التمرير */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+    @media (max-width: 560px) {
+      .controls { flex-direction: column; }
+      .fav-filter-btn { width: 100%; justify-content: center; }
+      .reader-header { flex-direction: column; gap: 0.8rem; }
+      .reader-controls { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="ornament">✦ ✦ ✦</span>
+  <h1>مكتبتي النصية</h1>
+  <p class="subtitle">كتب · روايات · قصص</p>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="ابحث عن كتاب..." oninput="applyFilters()" />
+  </div>
+  <button class="fav-filter-btn" id="favBtn" onclick="toggleFavFilter()">
+    <svg viewBox="0 0 24 24">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+    المفضلة
+  </button>
+</div>
+
+<div class="stats" id="statsBar">
+  <strong id="countShown">0</strong> كتاب
+</div>
+
+<div class="grid" id="booksGrid">
+  <div class="loading">جاري التحميل</div>
+</div>
+
+<!-- قارئ النصوص -->
+<div class="text-reader" id="textReader">
+  <div class="reader-header">
+    <div class="reader-title" id="readerTitle"></div>
+    <div class="reader-controls">
+      <div class="reader-font-size">
+        <button onclick="changeFontSize(-1)">-</button>
+        <span id="fontSizeValue">20</span>
+        <button onclick="changeFontSize(1)">+</button>
+      </div>
+      <div class="reader-actions">
+        <button class="reader-btn gold" onclick="downloadAsPDF()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF
+        </button>
+        <button class="reader-btn" onclick="closeReader()">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          إغلاق
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="reader-content" id="readerContent">
+    <div class="reader-pages" id="readerPages"></div>
+  </div>
+</div>
+
+<footer>✦ <span>مكتبتي الشخصية</span> ✦</footer>
+
+<script>
+  (function() {
+    const STORAGE_KEY = 'library_favorites_v1';
+    const COVER_COLORS = [
+      '#5c1a1a', '#1a3058', '#2a1a5c', '#1a4a30',
+      '#5c3a10', '#3a1050', '#105050', '#4a1040',
+      '#4a2810', '#1a4a4a', '#501028', '#283050'
+    ];
+
+    let ALL_BOOKS = [];
+    let showFavOnly = false;
+    let currentBookContent = '';
+    let currentBookTitle = '';
+    let currentFontSize = 20;
+
+    // إدارة التخزين المحلي
+    function getFavorites() {
+      try {
+        return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+      } catch {
+        return new Set();
+      }
+    }
+
+    function saveFavorites(set) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
+    }
+
+    // تحميل الكتب من الملف
+    async function loadLibrary() {
+      const grid = document.getElementById('booksGrid');
+      
+      try {
+        console.log('جاري تحميل engine.json...');
+        const res = await fetch('Files/engine.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        
+        const data = await res.json();
+        console.log('تم تحميل البيانات:', data);
+        
+        const books = Array.isArray(data) ? data : (data.books || []);
+
+        ALL_BOOKS = await Promise.all(books.map(async (book, index) => {
+          book._id = book.id || `book_${index}`;
+          
+          // تحميل الوصف إذا كان موجوداً
+          if (book.descFile) {
+            try {
+              const r = await fetch(book.descFile);
+              book.description = r.ok ? (await r.text()).trim() : '';
+            } catch {
+              book.description = '';
+            }
+          }
+          
+          return book;
+        }));
+
+        console.log('تم تحميل جميع الكتب:', ALL_BOOKS);
+        applyFilters();
+      } catch (err) {
+        console.error('خطأ في تحميل المكتبة:', err);
+        grid.innerHTML = `
+          <div class="error-msg">
+            تعذّر تحميل قائمة الكتب. تأكد من وجود الملف.
+            <br>
+            <code>Files/engine.json</code>
+            <br>
+            <small>${err.message}</small>
+          </div>`;
+      }
+    }
+
+    // تطبيق التصفية
+    function applyFilters() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const favorites = getFavorites();
+
+      const filtered = ALL_BOOKS.filter(book => {
+        const matchesFav = !showFavOnly || favorites.has(book._id);
+        const matchesQuery = !query ||
+          (book.title || '').toLowerCase().includes(query) ||
+          (book.description || '').toLowerCase().includes(query);
+        return matchesFav && matchesQuery;
+      });
+
+      renderBooks(filtered, favorites);
+      document.getElementById('countShown').textContent = filtered.length;
+      document.getElementById('statsBar').style.display = 'block';
+    }
+
+    // عرض الكتب
+    function renderBooks(books, favorites) {
+      const grid = document.getElementById('booksGrid');
+
+      if (books.length === 0) {
+        grid.innerHTML = `
+          <div class="empty">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            <h3>${showFavOnly ? 'المفضلة فارغة' : 'لا توجد نتائج'}</h3>
+            <p>${showFavOnly ? 'أضف كتباً إلى المفضلة بالضغط على القلب' : 'جرّب كلمة بحث مختلفة'}</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = books.map((book, index) => {
+        const color = book.color || COVER_COLORS[index % COVER_COLORS.length];
+        const isLiked = favorites.has(book._id);
+        const delay = (index % 6) * 0.05;
+
+        // مسار الصورة كما هو في engine.json
+        const imagePath = book.image || null;
+        
+        const coverHtml = imagePath
+          ? `<img src="${escapeHtml(imagePath)}" alt="${escapeHtml(book.title)}" loading="lazy"
+               onerror="this.parentElement.innerHTML=createFallback('${escapeJs(book.title)}','${color}')">`
+          : createFallback(book.title, color);
+
+        return `
+          <div class="card" style="animation-delay:${delay}s">
+            <button class="card-like ${isLiked ? 'liked' : ''}"
+                    onclick="toggleLike(event,'${escapeJs(book._id)}')">
+              <svg viewBox="0 0 24 24">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+
+            <div class="card-cover">${coverHtml}</div>
+
+            <div class="card-body">
+              <div class="card-title">${escapeHtml(book.title)}</div>
+              ${book.description ? `<p class="card-desc">${escapeHtml(book.description)}</p>` : ''}
+              <div class="card-actions">
+                <button class="btn btn-read" onclick="openReader('${escapeJs(book.file)}','${escapeJs(book.title)}')">
+                  <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                  قراءة
+                </button>
+                <button class="btn btn-dl" onclick="downloadBook('${escapeJs(book.file)}','${escapeJs(book.title)}')">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  تنزيل
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // تبديل حالة الإعجاب
+    window.toggleLike = function(e, bookId) {
+      e.stopPropagation();
+      const btn = e.currentTarget;
+      const favorites = getFavorites();
+
+      if (favorites.has(bookId)) {
+        favorites.delete(bookId);
+        btn.classList.remove('liked');
+      } else {
+        favorites.add(bookId);
+        btn.classList.add('liked');
+      }
+
+      saveFavorites(favorites);
+      if (showFavOnly) applyFilters();
+    };
+
+    // تبديل فلتر المفضلة
+    window.toggleFavFilter = function() {
+      showFavOnly = !showFavOnly;
+      document.getElementById('favBtn').classList.toggle('active', showFavOnly);
+      applyFilters();
+    };
+
+    // معالجة النص وتنسيقه
+    function parseText(text) {
+      if (!text) return '';
+      
+      // تقسيم الصفحات: سطر فارغ ثم * ثم سطر فارغ
+      const pages = text.split(/\n\s*\*\s*\n/);
+      
+      return pages.map((page, pageIndex) => {
+        if (!page.trim()) return '';
+        
+        let formattedText = page;
+        
+        // معالجة الألوان حسب المطلوب
+        formattedText = formattedText.replace(/gr\/(.*?)\\gr/g, '<span class="green">$1</span>');
+        formattedText = formattedText.replace(/r\/(.*?)\\r/g, '<span class="red">$1</span>');
+        formattedText = formattedText.replace(/b\/(.*?)\\b/g, '<span class="blue">$1</span>');
+        formattedText = formattedText.replace(/y\/(.*?)\\y/g, '<span class="yellow">$1</span>');
+        
+        // معالجة الخط العريض والمائل
+        formattedText = formattedText.replace(/B\/(.*?)\\B/g, '<span class="bold">$1</span>');
+        formattedText = formattedText.replace(/I\/(.*?)\\I/g, '<span class="italic">$1</span>');
+        
+        // تحويل النص إلى فقرات
+        const paragraphs = formattedText.split('\n').filter(line => line.trim());
+        const formattedParagraphs = paragraphs.map(p => {
+          if (p.trim()) {
+            return `<p>${p}</p>`;
+          }
+          return '';
+        }).join('');
+        
+        return `
+          <div class="reader-page">
+            <div class="reader-text" style="font-size: ${currentFontSize}px;">${formattedParagraphs}</div>
+            <div class="reader-page-number">الصفحة ${pageIndex + 1}</div>
+          </div>
+        `;
+      }).filter(page => page).join('');
+    }
+
+    // فتح القارئ
+    window.openReader = async function(file, title) {
+      try {
+        // المسار كامل كما هو في engine.json
+        console.log('محاولة فتح الكتاب من:', file);
+        
+        const response = await fetch(file);
+        if (!response.ok) {
+          throw new Error(`فشل تحميل الملف (${response.status})`);
+        }
+        
+        const text = await response.text();
+        console.log('تم تحميل الكتاب بنجاح، طول النص:', text.length);
+        
+        currentBookContent = text;
+        currentBookTitle = title;
+        
+        document.getElementById('readerTitle').textContent = title;
+        const parsedContent = parseText(text);
+        
+        if (!parsedContent) {
+          document.getElementById('readerPages').innerHTML = `
+            <div class="reader-page">
+              <div class="reader-text" style="font-size: ${currentFontSize}px;">
+                <p>الكتاب فارغ أو لا يحتوي على نص</p>
+              </div>
+            </div>
+          `;
+        } else {
+          document.getElementById('readerPages').innerHTML = parsedContent;
+        }
+        
+        document.getElementById('textReader').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      } catch (err) {
+        console.error('خطأ في فتح الكتاب:', err);
+        alert('تعذر تحميل الكتاب: ' + err.message);
+      }
+    };
+
+    // تغيير حجم الخط
+    window.changeFontSize = function(delta) {
+      currentFontSize = Math.max(14, Math.min(36, currentFontSize + delta));
+      document.getElementById('fontSizeValue').textContent = currentFontSize;
+      
+      if (currentBookContent) {
+        document.getElementById('readerPages').innerHTML = parseText(currentBookContent);
+      }
+    };
+
+    // إغلاق القارئ
+    window.closeReader = function() {
+      document.getElementById('textReader').classList.remove('active');
+      document.body.style.overflow = '';
+      currentBookContent = '';
+    };
+
+    // تنزيل كتاب من القائمة
+    window.downloadBook = async function(file, title) {
+      try {
+        const response = await fetch(file);
+        if (!response.ok) throw new Error('فشل تحميل الملف');
+        
+        const text = await response.text();
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${title}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('تعذر تنزيل الكتاب: ' + err.message);
+      }
+    };
+
+    // ─── تنزيل كـ PDF محسّن ───
+    window.downloadAsPDF = function() {
+      if (!currentBookContent || !currentBookTitle) return;
+
+      // تقسيم الصفحات
+      const pages = currentBookContent.split(/\n\s*\*\s*\n/);
+
+      // بناء HTML لكل صفحة مع التنسيقات
+      const pagesHTML = pages.map((page, i) => {
+        if (!page.trim()) return '';
+
+        let processed = page
+          // تطبيق الألوان
+          .replace(/gr\/(.*?)\\gr/g, '<span style="color:#2e7d32">$1</span>')
+          .replace(/r\/(.*?)\\r/g,   '<span style="color:#c62828">$1</span>')
+          .replace(/b\/(.*?)\\b/g,   '<span style="color:#1565c0">$1</span>')
+          .replace(/y\/(.*?)\\y/g,   '<span style="color:#b08500">$1</span>')
+          // تطبيق التنسيقات
+          .replace(/B\/(.*?)\\B/g,   '<strong>$1</strong>')
+          .replace(/I\/(.*?)\\I/g,   '<em>$1</em>');
+
+        // تحويل إلى فقرات
+        const paragraphs = processed.split('\n')
+          .filter(line => line.trim())
+          .map(line => `<p>${line}</p>`)
+          .join('');
+
+        return `
+          <div class="pdf-page">
+            <div class="pdf-content">${paragraphs}</div>
+            <div class="pdf-footer">
+              <span class="pdf-ornament">✦</span>
+              <span class="pdf-page-num">${i + 1}</span>
+              <span class="pdf-ornament">✦</span>
+            </div>
+          </div>`;
+      }).join('');
+
+      // قالب HTML كامل للـ PDF
+      const pdfHTML = `<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>${currentBookTitle}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Amiri', serif;
+      background: #faf7f2;
+      color: #2c2c2c;
+      direction: rtl;
+    }
+    
+    .pdf-page {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 3rem 3rem 4rem;
+      background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      border-radius: 12px;
+      page-break-after: always;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    
+    .pdf-content {
+      flex: 1;
+      font-size: 16pt;
+      line-height: 2.2;
+      text-align: justify;
+    }
+    
+    .pdf-content p {
+      margin-bottom: 1.2rem;
+    }
+    
+    .pdf-content strong {
+      font-weight: 700;
+      color: #1e3a5f;
+    }
+    
+    .pdf-content em {
+      font-style: italic;
+      color: #5f3a1e;
+    }
+    
+    .pdf-footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e0d6c7;
+      text-align: center;
+      color: #a67c4d;
+      font-size: 11pt;
+      letter-spacing: 2px;
+    }
+    
+    .pdf-ornament {
+      margin: 0 1rem;
+      opacity: 0.5;
+    }
+    
+    .pdf-page-num {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 300;
+    }
+    
+    @media print {
+      body { background: white; }
+      .pdf-page {
+        box-shadow: none;
+        margin: 0;
+        padding: 2.5cm 2cm;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  ${pagesHTML}
+</body>
+</html>`;
+
+      // فتح نافذة جديدة للطباعة/الحفظ
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        alert('الرجاء السماح بالنوافذ المنبثقة للمتصفح');
+        return;
+      }
+
+      printWindow.document.write(pdfHTML);
+      printWindow.document.close();
+
+      // انتظار تحميل الخطوط ثم فتح نافذة الطباعة
+      printWindow.addEventListener('load', () => {
+        setTimeout(() => {
+          printWindow.focus();
+          printWindow.print();
+        }, 500);
+      });
+    };
+
+    // إنشاء غلاف بديل
+    window.createFallback = function(title, color) {
+      return `<div class="card-cover-fallback" style="background:linear-gradient(140deg,${color} 0%,#0d0b08 100%)">
+        <div class="fallback-title">${escapeHtml(title)}</div>
+        <div class="fallback-orn">✦ ✦ ✦</div>
+      </div>`;
+    };
+
+    // دوال التنصيص
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function escapeJs(text) {
+      if (!text) return '';
+      return String(text).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    }
+
+    // ربط دالة التصفية
+    window.applyFilters = applyFilters;
+
+    // إغلاق القارئ عند النقر خارج الإطار
+    document.getElementById('textReader').addEventListener('click', function(e) {
+      if (e.target === this) closeReader();
+    });
+
+    // إغلاق القارئ بالضغط على ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeReader();
+    });
+
+    // بدء التحميل
+    loadLibrary();
+  })();
+</script>
+</body>
+</html>

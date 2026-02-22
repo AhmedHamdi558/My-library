@@ -1,18 +1,17 @@
 [
   {
-    "title": "السدم",
-    "category": "كتاب",
-    "image": "Files/Images/Polish_20260222_140518414.png",
-    "descFile": "Files/Texts/Elsedm.txt",
-    "pdf": "Files/Elsedm.txt",
-    "color": "#4a1a10"
+    "id": "book1",
+    "title": "كتاب التجارب",
+    "file": "Elsedm.txt",
+    "image": "Elsedm.jpg",
+    "descFile": "تجارب.txt",
+    "color": "#5c1a1a"
   },
   {
-    "title": "أصوات من الصحراء",
-    "category": "قصة",
-    "image": "Files/Images/أصوات-من-الصحراء.jpg",
-    "descFile": "Files/Texts/أصوات-من-الصحراء.txt",
-    "pdf": "Files/أصوات-من-الصحراء.pdf",
-    "color": "#1a3050"
+    "id": "book2", 
+    "title": "كتاب الرحلات",
+    "file": "رحلات.txt",
+    "image": "رحلات.jpg",
+    "descFile": "رحلات.txt"
   }
 ]
